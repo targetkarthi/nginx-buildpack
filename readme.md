@@ -45,11 +45,11 @@ at=info method=GET path=/ host=salty-earth-7125.herokuapp.com request_id=e2c79e8
 
 Nginx-buildpack provides a command named `bin/start-nginx` this command takes another command as an argument. You must pass your app server's startup command to `start-nginx`.
 
-For example, to get NGINX and Unicorn up and running:
+For example, to get NGINX and Node up and running:
 
 ```bash
 $ cat Procfile
-web: bin/start-nginx bundle exec unicorn -c config/unicorn.rb
+web: bin/start-nginx node web.js
 ```
 
 ### Setting the Worker Processes
@@ -73,95 +73,52 @@ See [scripts/build_nginx.sh](scripts/build_nginx.sh) for the build steps. Config
 
 ### Application/Dyno coordination
 
-The buildpack will not start NGINX until a file has been written to `/tmp/app-initialized`. Since NGINX binds to the dyno's $PORT and since the $PORT determines if the app can receive traffic, you can delay NGINX accepting traffic until your application is ready to handle it. The examples below show how/when you should write the file when working with Unicorn.
+The buildpack will not start NGINX until a file has been written to `/tmp/app-initialized`. Since NGINX binds to the dyno's $PORT and since the $PORT determines if the app can receive traffic, you can delay NGINX accepting traffic until your application is ready to handle it. 
 
 ## Setup
-
-Here are 2 setup examples. One example for a new app, another for an existing app. In both cases, we are working with ruby & unicorn. Keep in mind that this buildpack is not ruby specific.
-
-### Existing App
 
 Update Buildpacks
 ```bash
 $ heroku config:set BUILDPACK_URL=https://github.com/ddollar/heroku-buildpack-multi.git
-$ echo 'https://github.com/ryandotsmith/nginx-buildpack.git' >> .buildpacks
-$ echo 'https://codon-buildpacks.s3.amazonaws.com/buildpacks/heroku/ruby.tgz' >> .buildpacks
+$ echo 'https://github.com/TargetRAD/nginx-buildpack.git' >> .buildpacks
+$ echo 'https://github.com/heroku/heroku-buildpack-nodejs.git' >> .buildpacks
 $ git add .buildpacks
 $ git commit -m 'Add multi-buildpack'
 ```
 Update Procfile:
 ```
-web: bin/start-nginx bundle exec unicorn -c config/unicorn.rb
+web: bin/start-nginx node web.js
 ```
 ```bash
 $ git add Procfile
 $ git commit -m 'Update procfile for NGINX buildpack'
 ```
-Update Unicorn Config
-```ruby
-require 'fileutils'
-listen '/tmp/nginx.socket'
-before_fork do |server,worker|
-	FileUtils.touch('/tmp/app-initialized')
-end
+Update node launch script (ie. web.js)
+```javascript
+var fs = require('fs');
+// write nginx tmp
+fs.writeFile("/tmp/app-initialized", "Ready to launch nginx", function(err) {
+    if(err) {
+        console.log(err);
+    } else {
+        console.log("The file was saved!");
+    }
+});
+
+// listen on the nginx socket
+app.listen('/tmp/nginx.socket', function() {
+	console.log("Listening ");
+});
 ```
 ```bash
-$ git add config/unicorn.rb
-$ git commit -m 'Update unicorn config to listen on NGINX socket.'
+$ git add web.js
+$ git commit -m 'Update web.js to listen on NGINX socket.'
 ```
 Deploy Changes
 ```bash
 $ git push heroku master
 ```
 
-### New App
-
-```bash
-$ mkdir myapp; cd myapp
-$ git init
-```
-
-**Gemfile**
-```ruby
-source 'https://rubygems.org'
-gem 'unicorn'
-```
-
-**config.ru**
-```ruby
-run Proc.new {[200,{'Content-Type' => 'text/plain'}, ["hello world"]]}
-```
-
-**config/unicorn.rb**
-```ruby
-require 'fileutils'
-preload_app true
-timeout 5
-worker_processes 4
-listen '/tmp/nginx.socket', backlog: 1024
-
-before_fork do |server,worker|
-	FileUtils.touch('/tmp/app-initialized')
-end
-```
-Install Gems
-```bash
-$ bundle install
-```
-Create Procfile
-```
-web: bin/start-nginx bundle exec unicorn -c config/unicorn.rb
-```
-Create & Push Heroku App:
-```bash
-$ heroku create --buildpack https://github.com/ddollar/heroku-buildpack-multi.git
-$ echo 'https://codon-buildpacks.s3.amazonaws.com/buildpacks/heroku/ruby.tgz' >> .buildpacks
-$ echo 'https://github.com/ryandotsmith/nginx-buildpack.git' >> .buildpacks
-$ git add .
-$ git commit -am "init"
-$ git push heroku master
-$ heroku logs -t
-```
 Visit App
 ```
 $ heroku open
