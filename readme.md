@@ -8,8 +8,9 @@ Some application servers (e.g. Ruby's Unicorn) halt progress when dealing with n
 
 ## Versions
 
-* Buildpack Version: 0.4
-* NGINX Version: 1.5.7
+* NGINX Version: 1.5.11
+* PCRS 8.34
+* headers-more Module 0.25
 
 ## Requirements
 
@@ -65,11 +66,11 @@ $ heroku config:set NGINX_WORKERS=8
 
 ### Customizable NGINX Config
 
-You can provide your own NGINX config by creating a file named `nginx.conf.erb` in the config directory of your app. Start by copying the buildpack's [default config file](https://github.com/ryandotsmith/nginx-buildpack/blob/master/config/nginx.conf.erb).
+You can provide your own NGINX config by creating a file named `nginx.conf.erb` in the config directory of your app. Start by copying the buildpack's [default config file](config/nginx.conf.erb).
 
 ### Customizable NGINX Compile Options
 
-See [scripts/build_nginx.sh](scripts/build_nginx.sh) for the build steps. Configuring is as easy as changing the "./configure" options.
+See [buidling-nginx](https://targetrad.squarespace.com/rad-internal-bla-bla-blog/2014/3/10/building-nginx) on the TargetRad blog on how to build an NGINX binary.
 
 ### Application/Dyno coordination
 
