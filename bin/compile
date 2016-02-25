@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
-
+# bin/compile BUILD_DIR CACHE_DIR ENV_DIR
 set -e
+
+echo "BUILD_DIR=" $1
+echo "CACHE_DIR=" $2
+echo "ENV_DIR=" $3
 
 mkdir -p "$1/bin/"
 cp bin/nginx "$1/bin/"
