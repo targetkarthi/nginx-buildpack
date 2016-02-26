@@ -15,13 +15,15 @@ cd $temp_dir
 echo "Temp dir: $temp_dir"
 
 echo "Downloading and extracting $nginx_tarball_url"
-(cd $temp_dir; curl -L# $nginx_tarball_url | tar xvz)
+(cd $temp_dir; curl -L# $nginx_tarball_url | tar xz) &
 
 echo "Downloading and extracting $pcre_tarball_url"
-(cd nginx-${NGINX_VERSION}; curl -L# $pcre_tarball_url | tar xvz)
+(cd nginx-${NGINX_VERSION}; curl -L# $pcre_tarball_url | tar xz) &
 
 echo "Downloading and extracting $headers_more_nginx_module_url"
-(cd nginx-${NGINX_VERSION}; curl -L# $headers_more_nginx_module_url | tar xvz)
+(cd nginx-${NGINX_VERSION}; curl -L# $headers_more_nginx_module_url | tar xz) &
+
+wait
 
 (
 	cd nginx-${NGINX_VERSION}
