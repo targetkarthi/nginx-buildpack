@@ -13,13 +13,13 @@ BUILD_DIR=$(mktemp -d /tmp/nginx.XXXXXXXXXX)
 echo "Build dir: $BUILD_DIR"
 
 echo "Downloading and extracting $NGINX_TARBALL_URL"
-(cd $BUILD_DIR; curl -L# $NGINX_TARBALL_URL | tar xz)
+(cd /tmp; curl -L# $NGINX_TARBALL_URL | tar xz)
 
 echo "Downloading and extracting $PCRE_TARBALL_URL"
-(cd nginx-${NGINX_VERSION}; curl -L# $PCRE_TARBALL_URL | tar xz)
+(cd /tmp/nginx-${NGINX_VERSION}; curl -L# $PCRE_TARBALL_URL | tar xz)
 
 echo "Downloading and extracting $HEADERS_MORE_NGINX_MODULE_TARBALL_URL"
-(cd nginx-${NGINX_VERSION}; curl -L# $HEADERS_MORE_NGINX_MODULE_TARBALL_URL | tar xz)
+(cd /tmp/nginx-${NGINX_VERSION}; curl -L# $HEADERS_MORE_NGINX_MODULE_TARBALL_URL | tar xz)
 
 (
 	cd nginx-${NGINX_VERSION}
