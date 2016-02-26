@@ -22,7 +22,7 @@ echo "Downloading and extracting $HEADERS_MORE_NGINX_MODULE_TARBALL_URL"
 (cd /tmp/nginx-${NGINX_VERSION}; curl -L# $HEADERS_MORE_NGINX_MODULE_TARBALL_URL | tar xz)
 
 (
-	cd nginx-${NGINX_VERSION}
+	cd /tmp/nginx-${NGINX_VERSION}
 	./configure \
 		--with-pcre=pcre-${PCRE_VERSION} \
 		--prefix=/tmp/nginx \
