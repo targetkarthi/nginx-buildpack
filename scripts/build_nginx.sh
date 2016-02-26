@@ -19,9 +19,9 @@ headers_more_nginx_module_url=https://github.com/agentzh/headers-more-nginx-modu
 
 temp_dir=$(mktemp -d /tmp/nginx.XXXXXXXXXX)
 
-echo "Serving files from /tmp on $PORT"
-cd /tmp
-python -m SimpleHTTPServer $PORT &
+#echo "Serving files from /tmp on $PORT"
+#cd /tmp
+#python -m SimpleHTTPServer $PORT &
 
 cd $temp_dir
 echo "Temp dir: $temp_dir"
