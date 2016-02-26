@@ -27,15 +27,15 @@ cd $temp_dir
 echo "Temp dir: $temp_dir"
 
 echo "Downloading $nginx_tarball_url"
-curl -L $nginx_tarball_url | tar xvz
+curl -L $nginx_tarball_url | tar xzf
 echo "DONE!"
 
 echo "Downloading $pcre_tarball_url"
-(cd nginx-${NGINX_VERSION} && curl -L $pcre_tarball_url | tar xvz )
+(cd nginx-${NGINX_VERSION} && curl -L $pcre_tarball_url | tar xzf )
 echo "DONE!"
 
 echo "Downloading $headers_more_nginx_module_url"
-(cd nginx-${NGINX_VERSION} && curl -L $headers_more_nginx_module_url | tar xvz )
+(cd nginx-${NGINX_VERSION} && curl -L $headers_more_nginx_module_url | tar xzf )
 echo "DONE!"
 
 (
