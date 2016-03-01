@@ -53,6 +53,22 @@ $ cat Procfile
 web: bin/start-nginx node web.js
 ```
 
+### Building
+```bash
+heroku run bash
+
+git config --global user.email = "Donald Armstrong"
+git config --global user.name = "Donald Armstrong"
+
+git clone https://github.com/TGTLabs/nginx-buildpack.git
+
+cd scripts
+sh build_nginx.sh
+```
+
+Copy the binary to bin/nginx
+commit back to github
+
 ### Setting the Worker Processes
 
 You can configure NGINX's `worker_processes` directive via the
@@ -74,7 +90,7 @@ See [buidling-nginx](https://targetrad.squarespace.com/rad-internal-bla-bla-blog
 
 ### Application/Dyno coordination
 
-The buildpack will not start NGINX until a file has been written to `/tmp/app-initialized`. Since NGINX binds to the dyno's $PORT and since the $PORT determines if the app can receive traffic, you can delay NGINX accepting traffic until your application is ready to handle it. 
+The buildpack will not start NGINX until a file has been written to `/tmp/app-initialized`. Since NGINX binds to the dyno's $PORT and since the $PORT determines if the app can receive traffic, you can delay NGINX accepting traffic until your application is ready to handle it.
 
 ## Setup
 

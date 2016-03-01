@@ -1,9 +1,13 @@
 #!/bin/bash
 # Build NGINX and modules on Heroku.
 
-NGINX_VERSION=1.9.12
-PCRE_VERSION=8.38
-HEADERS_MORE_VERSION=0.29
+#
+# Run this within a heroku shell
+#
+
+NGINX_VERSION=${NGINX_VERSION:-1.9.12}
+PCRE_VERSION=${PCRE_VERSION:-8.38}
+HEADERS_MORE_VERSION=${HEADERS_MORE_VERSION:-0.29}
 
 NGINX_TARBALL_URL=http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz
 PCRE_TARBALL_URL=https://sourceforge.net/projects/pcre/files/pcre/${PCRE_VERSION}/pcre-${PCRE_VERSION}.tar.gz
