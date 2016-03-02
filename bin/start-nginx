@@ -59,6 +59,7 @@ fi
 	echo 'buildpack=nginx at=nginx-start'
 	bin/nginx -p . -c config/nginx.conf
 	echo 'nginx' >$psmgr
+	echo 'version - Karthik -'.bin/nginx -p 
 ) &
 
 #This read will block the process waiting on a msg to be put into the fifo.
